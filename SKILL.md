@@ -155,6 +155,7 @@ When a framework is swapped:
 ## Supporting material
 
 For detailed rule tracing and architecture-model context, see:
-- `.architecture-build/extracted-rules.md`
-- `.architecture-build/architecture-model.md`
-- `.architecture-build/uncertainties.md`
+- `docs/extracted-rules.md`
+- `docs/architecture-model.md`
+- `docs/uncertainties.md`
+- `docs/architecture-reference.md`
