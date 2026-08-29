@@ -1,0 +1,160 @@
+---
+name: ui-clean-architecture
+description: Enforces the UI Clean Architecture described in knowledge/ for screen-oriented front-end implementations.
+---
+
+# UI Clean Architecture Skill
+
+## Source of truth
+
+Use `knowledge/` as the only source of architectural truth.
+
+This skill compiles the knowledge in `knowledge/` into agent behavior. It does not reinterpret the architecture through Clean Architecture, DDD, Hexagonal Architecture, MVC, or any other known approach.
+
+When a rule is unclear, prefer `Unknown` over invention.
+
+## Architectural invariants
+
+1. Keep the project split into `layouts/`, `domains/`, and `shared/`.
+2. Treat each domain as a standalone screen/page abstraction.
+3. A domain must know its required inputs and outputs.
+4. Section components are standalone and must not directly depend on sibling section components.
+5. Components handle local UI events and local state.
+6. Constants are exported; use SCREAMING_SNAKE_CASE.
+7. Framework files such as `page.tsx`, `app/.../page.*`, or equivalent route files act as integrators, not as the architecture itself.
+8. Shared abstractions are only for cross-domain reuse.
+
+## Required reading before implementation
+
+Before creating or modifying architecture-aware code, inspect the relevant architectural concepts in `knowledge/`:
+
+- `knowledge/index.md` for the project structure and framework integration rules
+- `knowledge/domain/index.md` for domain responsibilities and standalone screen behavior
+- `knowledge/components/index.md` for section/atomic component boundaries and behavior
+- `knowledge/constants/index.md` for constant organization and naming rules
+
+If the task involves a screen, domain, shared abstraction, reusable component, or constant, load the relevant section before deciding the implementation.
+
+## Decision flow
+
+Use this sequence for every implementation task:
+
+1. Identify affected architecture concepts.
+2. Determine whether the task changes a `layout`, `domain`, `shared`, `component`, or `constant`.
+3. Check the relevant `knowledge/` guidance before editing code.
+4. Choose the implementation that respects the architecture without inventing new architectural rules.
+5. Validate the result against the known invariants.
+
+## Structure rules
+
+### Layouts
+When creating or modifying a layout:
+- keep the standard HTML shell and reusable frame-level structure in `layouts/`
+- do not blur layout concerns into domain logic
+- preserve the architecture's separation between layout shell and domain page composition
+
+### Domains
+When creating or modifying a domain:
+- treat the domain as a standalone screen or page
+- include all required components and dependencies needed for that screen
+- let the domain know its required inputs and outputs
+- keep domain-local abstractions in the domain unless they are reused across domains
+- render the domain from the framework route or page integration layer
+
+### Shared
+When creating or modifying a shared abstraction:
+- only place it in `shared/` if it is reused across domains
+- preserve the same structure discipline as the domain abstraction
+- do not move domain-local code into shared just because it is reusable in one screen
+
+### Components
+When creating or modifying a component:
+- decide whether it is a section component or an atomic component
+- if it is a section component, keep it purpose-specific and standalone
+- if it is an atomic component, keep it reusable and small
+- section components must not directly depend on sibling section components
+- components react to user events and update local state when needed
+- pass necessary state to child components when those children depend on it
+
+### Constants
+When creating or modifying constants:
+- centralize values in exported constants
+- use `SCREAMING_SNAKE_CASE`
+- prefer pure derived values or fixed values over scattered literals
+- accept `process.env`-based values when the architecture requires system constants
+- keep constants semantically grouped in dedicated files rather than in component directory nesting
+
+## Operational guidance
+
+### Create a feature
+When creating a feature for a screen:
+1. Determine whether it is a domain, a section component, an atomic component, or a constant.
+2. Place it according to its scope: domain-local or shared.
+3. Compose the screen from the domain root.
+4. Keep section boundaries independent and stacked top-to-bottom.
+5. Use framework route files only to integrate the domain into the page lifecycle.
+
+### Modify an existing feature
+Before modifying a feature:
+1. Identify the domain or shared abstraction the feature belongs to.
+2. Check whether the change affects a local component, a shared component, or a constant.
+3. Preserve the architecture's domain boundary and section independence.
+4. Do not relocate local screen logic into shared abstractions unless the architecture explicitly supports reuse across domains.
+
+### Refactor code
+When refactoring:
+1. Maintain the legal structure: layouts, domains, shared, components, constants.
+2. Prefer reducing duplication without changing architectural ownership.
+3. Keep domains standalone.
+4. Keep section-to-section coupling forbidden.
+5. Do not preserve a confusing structure just because it works in one framework.
+
+### Review a pull request
+Review for architecture adherence by checking:
+- Is the structure still `layouts` / `domains` / `shared`?
+- Is each screen still a domain with clear inputs and outputs?
+- Are section components still isolated from sibling sections?
+- Are constants still centralized and properly named?
+- Are framework route files used as integrations rather than as the architecture definition?
+
+### Integrate an external API or system value
+When integrating external systems:
+1. Determine whether the integration is a constant, a shared abstraction, or a domain requirement.
+2. Do not invent an architectural layer that the knowledge does not define.
+3. Keep framework route conventions at the boundary only.
+4. Preserve the screen/domain responsibility model.
+
+## Forbidden actions
+
+Never:
+- rename the architecture into Clean Architecture, DDD, Hexagonal Architecture, or another external methodology
+- treat a framework convention as a top-level architectural rule
+- move section dependencies into sibling section components
+- create domain logic that is not owned by the domain
+- scatter constants across component folders in a deep nested structure
+- convert example code into a mandatory standard unless the knowledge explicitly says so
+- invent missing architectural rules to fill gaps
+
+## Framework-agnostic rule
+
+The architecture is independent from frameworks. A route file may follow the framework's route convention, but the architecture still remains: layouts, domains, shared, components, constants.
+
+When a framework is swapped:
+- keep the same architecture
+- change only the route integration or page wrapper mechanism
+- do not reinterpret the architecture to fit the framework's conventions
+
+## Quick reference
+
+- `layouts/`: page shell and reusable cross-screen frame
+- `domains/`: screens/pages with local dependencies and composition
+- `shared/`: cross-domain reusable abstractions
+- `components/`: section and atomic UI blocks
+- `constants/`: exported fixed and derived values in `SCREAMING_SNAKE_CASE`
+
+## Supporting material
+
+For detailed rule tracing and architecture-model context, see:
+- `.architecture-build/extracted-rules.md`
+- `.architecture-build/architecture-model.md`
+- `.architecture-build/uncertainties.md`
