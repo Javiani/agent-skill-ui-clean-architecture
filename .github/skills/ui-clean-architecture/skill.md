@@ -7,7 +7,7 @@ description: Apply the UI clean architecture defined in the knowledge/ documenta
 
 Source of truth: the files under `knowledge/`.
 
-This skill is the operational translation of the architecture described in `knowledge/`. It does not inherit rules from Clean Architecture, Hexagonal Architecture, DDD, MVC, MVVM, Vertical Slice Architecture, SOLID, or any other architectural school.
+This skill is the operational translation of the architecture described in `knowledge/`. It follows the vocabulary and structure defined there without importing rules from other architectural schools or frameworks.
 
 These instructions are the authority. When the documentation is silent, do not invent a rule. Prefer the simplest implementation compatible with the documented structure.
 

@@ -11,7 +11,7 @@ Use `knowledge/` as the only source of architectural truth.
 
 This skill compiles the knowledge in `knowledge/` into agent behavior. It does not reinterpret the architecture through Clean Architecture, DDD, Hexagonal Architecture, MVC, or any other known approach.
 
-When a rule is unclear, prefer `Unknown` over invention.
+When a rule is unclear, do not invent one; keep the implementation minimal and aligned with the documented structure.
 
 ## Architectural invariants
 
