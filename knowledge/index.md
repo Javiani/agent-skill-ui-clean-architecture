@@ -15,6 +15,7 @@ As duas macro partes que compõe essa arquitetura são:
 - [Domains](./domain/index.md)
 - [Components](./components/index.md)
 - [Constants](./constants/index.md)
+- [Servicos](./services/index.md)
 
 # Estrutura de Pastas
 
@@ -29,6 +30,9 @@ Definem os tipos de layout do sistema, considerando as definições padrão de b
 O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os domínios possuem todas as abstrações as quais ele depende como : [Components](./components/index.md), [Constants](./constants/index.md) quando estes aparecem apenas no contexto deste domínio.
 	- [Components](./components/index.md), deve estar em uma pasta apenas para ele, e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção.
 	- [Constants](./constants/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em pastas como os components, para simplificar.
+  - [Entities](./entities/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em sub-pastas para simplificar.
+  - [Services](./services/index.md), deve estar em uma pasta apenas para ele, e pode conter subpastas para armazenar os servicos de maneira contextualizada.
+
 
 ## Shared
 Esta pasta armazena o conjunto de abstrações que são cross domínios, ou seja, aparecem ou sao reutilizados por outros domínios. São as abstrações compartilhadas. Seguem a mesma estrutura de pastas que os domínios com esta diferença apenas de armazenarem abstrações compartilhadas.
