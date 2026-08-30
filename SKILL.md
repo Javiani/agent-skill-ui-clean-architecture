@@ -52,6 +52,7 @@ When creating or modifying a layout:
 - keep the standard HTML shell and reusable frame-level structure in `layouts/`
 - do not blur layout concerns into domain logic
 - preserve the architecture's separation between layout shell and domain page composition
+- store layouts as flat files (e.g., `default.tsx`, `admin.tsx`) without deep nested folders
 
 ### Domains
 When creating or modifying a domain:
@@ -70,8 +71,10 @@ When creating or modifying a shared abstraction:
 ### Components
 When creating or modifying a component:
 - decide whether it is a section component or an atomic component
-- if it is a section component, keep it purpose-specific and standalone
-- if it is an atomic component, keep it reusable and small
+- if it is a section component, keep it purpose-specific and standalone, folder-organized under `components/`
+- if it is an atomic component used only within one section component, place it in a subfolder within that section component's folder
+- if an atomic component is used by multiple section components within the same domain, place it as a sibling folder alongside the section components
+- if an atomic component is used across multiple domains, place it in `shared/components/`
 - section components must not directly depend on sibling section components
 - components react to user events and update local state when needed
 - pass necessary state to child components when those children depend on it
@@ -79,10 +82,11 @@ When creating or modifying a component:
 ### Constants
 When creating or modifying constants:
 - centralize values in exported constants
-- use `SCREAMING_SNAKE_CASE`
+- use `SCREAMING_SNAKE_CASE` for all constant names (variables and functions)
 - prefer pure derived values or fixed values over scattered literals
 - accept `process.env`-based values when the architecture requires system constants
 - keep constants semantically grouped in dedicated files rather than in component directory nesting
+- store constants as flat files (e.g., `environment.ts`, `api.ts`) without deep nested folder structures
 
 ## Operational guidance
 
