@@ -22,6 +22,8 @@ O projeto deve ser separado em layouts, domains e shared.
 
 ## Layouts
 Definem os tipos de layout do sistema, considerando as definições padrão de boilerplate do html desde a seção DOCTYPE, até o elemento <body>. Os elementos do layout serão aqueles reutilizados cross telas.
+- A pasta deve conter uma lista de arquivos .ts / .js nao devem estar em uma estrutura quebrada em pastas, ex: default.[jsx, tsx, astro, svelte], admin.[jsx, tsx, astro, svelte] e assim por diante.
+
 
 ## Domains
 O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os domínios possuem todas as abstrações as quais ele depende como : [Components](./components/index.md), [Constants](./constants/index.md) quando estes aparecem apenas no contexto deste domínio.
