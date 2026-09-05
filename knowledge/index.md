@@ -1,44 +1,60 @@
 
-# Descrição do UI Clean Architecture
+# UI Clean Architecture
 
-Esta é uma leitura do clássico clean architecture do Uncle Bob porém olhando sob perspectiva de UI / front-end, de forma a manter o máximo de simplicidade, desacoplamento e simplicidade do sistema além de garantir uma padronização e melhor detalhamento das possíveis abstrações de uma aplicação front-end, bem como a forma como quebrar as partes do todo.
+This architecture describes a framework-agnostic way to organize front-end applications around screens, reusable UI blocks, data adaptation, external communication, and fixed values.
 
-As duas macro partes que compõe essa arquitetura são:
+The architecture has two parts:
 
-- Estrutura de Pastas: Define em quais pastas e localização devem ficar as abstrações.
+- Folder structure: defines where each abstraction must live.
+- Abstractions: defines the responsibilities and boundaries of the application's parts.
 
-- Abstrações: Define quais sao os tipos de problemas de uma aplicação clássica front-end, onde moram as implementações das partes do sistema.
-
-
-# Abstrações
+# Abstractions
 
 - [Domains](./domain/index.md)
 - [Entities](./entities/index.md)
 - [Components](./components/index.md)
 - [Constants](./constants/index.md)
-- [Servicos](./services/index.md)
+- [Services](./services/index.md)
 
-# Estrutura de Pastas
+# Folder Structure
 
-O projeto deve ser separado em layouts, domains e shared. Utilize o padrão kebab-case para nomear pastas e arquivos sem exceção, ignore qualquer padronização nesse aspecto do framework/biblioteca utilizada. No primeiro nível de cada abstração, `components` e `services` devem usar uma pasta semântica por abstração contendo um arquivo `index`, enquanto `constants` e `entities` permanecem como arquivos semânticos diretamente dentro de suas pastas. Exemplos: `components/menu-bar/index.jsx`, `services/tmdb/index.ts`, `entities/product.ts`.
+The project must be separated into `layouts`, `domains`, and `shared`.
+
+Use `kebab-case` for every folder and file name. Framework or library naming conventions do not override this rule.
+
+At the first level of each abstraction:
+
+- `components` and `services` use one semantic folder per abstraction with an `index` file.
+- `constants` and `entities` use semantic files directly inside their folders.
+
+Examples: `components/menu-bar/index.jsx`, `services/tmdb/index.ts`, and `entities/product.ts`.
 
 ## Layouts
-Definem os tipos de layout do sistema, considerando as definições padrão de boilerplate do html desde a seção DOCTYPE, até o elemento <body>. Os elementos do layout serão aqueles reutilizados cross telas.
-- A pasta deve conter uma lista de arquivos .ts / .js nao devem estar em uma estrutura quebrada em pastas, ex: default.[jsx, tsx, astro, svelte], admin.[jsx, tsx, astro, svelte] e assim por diante.
+
+Layouts define the standard HTML document shell and reusable frame-level elements shared across screens, from `DOCTYPE` through `<body>`.
+
+- Keep layout files directly inside `layouts/`.
+- Do not create nested layout folders for layout variants.
+- Examples include `default.[jsx, tsx, astro, svelte]` and `admin.[jsx, tsx, astro, svelte]`.
 
 ## Domains
-O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os domínios possuem todas as abstrações as quais ele depende como : [Components](./components/index.md), [Constants](./constants/index.md) quando estes aparecem apenas no contexto deste domínio.
-	- [Components](./components/index.md), deve estar em uma pasta apenas para ele, usando `components/<component-name>/index` e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção.
-	- [Constants](./constants/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em pastas como os components, para simplificar.
-  - [Entities](./entities/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica diretamente em `entities/`. Adaptadores de JSON, como `mapShow`, pertencem à entidade correspondente.
-  - [Services](./services/index.md), deve estar em uma pasta apenas para ele, usando `services/<service-name>/index` e pode conter subpastas para armazenar os servicos de maneira contextualizada. Funções de API/fetch são services, não arquivos soltos no domínio.
 
-As páginas/rotas do framework são apenas integradores do domínio. Elas resolvem o parâmetro da rota, carregam o contexto necessário e renderizam o domínio. O HTML detalhado e a composição de tela pertencem ao domínio, não ao arquivo de rota.
+A domain represents one screen or page. It owns every abstraction required by that screen when the abstraction is domain-specific.
+
+- Domain-local components use `components/<component-name>/index`.
+- Atomic components that exist only inside one section may be nested in that section's folder.
+- Atomic components reused by multiple sections may be placed beside the section folders.
+- Domain-local constants use semantic flat files directly inside `constants/`.
+- Domain-local entities use semantic files directly inside `entities/`. JSON adapters such as `map-show` belong to the corresponding entity.
+- Domain-local services use `services/<service-name>/index`. API and fetch functions are services, not loose files at the domain root.
+
+Framework pages and route files are domain integrators. They resolve route parameters, load required context, and render the domain. Detailed HTML and screen composition belong to the domain, not the route file.
 
 ## Shared
-Esta pasta armazena o conjunto de abstrações que são cross domínios, ou seja, aparecem ou sao reutilizados por outros domínios. São as abstrações compartilhadas. Seguem a mesma estrutura de pastas que os domínios com esta diferença apenas de armazenarem abstrações compartilhadas.
 
-# Exemplo 
+`shared/` stores abstractions reused across domains. It follows the same folder structure as a domain, but its contents are cross-domain abstractions rather than screen-specific abstractions.
+
+# Example
 
 .
 └── src/
@@ -62,12 +78,11 @@ Esta pasta armazena o conjunto de abstrações que são cross domínios, ou seja
         └── constants/
 
 
-# Especificidades de Frameworks
+# Framework Integration
 
-Os Frameworks possuem algumas convenções padrões para algumas pastas para gerar as url's relacionadas à este padrão de estrutura de pastas que eles definem, algumas convenções são: Ex: `pages`, `app` etc.
-A arquitetura deve seguir estas convenções dos frameworks para as páginas, porém utilizando a abstração de dominios para gerar / compor as telas.
+Frameworks may define route conventions such as `pages`, `app`, or `routes`. Follow those conventions at the route boundary, while using domains to generate and compose screens.
 
-Um exemplo do caso do Next ( React ):
+Example using Next.js and React:
 
 `app/blog/page.tsx`
 
@@ -103,4 +118,4 @@ export default function Blog({ posts }) {
 }
 ```
 
-A convenção `page.tsx` do framework acaba sendo um integrador para as abstrações das pastas do clean architecture.
+The framework convention `page.tsx` is an integration point for the architecture's folder abstractions. It does not replace the domain abstraction.

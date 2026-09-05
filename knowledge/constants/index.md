@@ -1,11 +1,12 @@
 
 # Constants
-Centralizam informações / valores que são fixos do sistema, seja usando de variáveis ou usando funções puras, retornando valores que podem ser derivados de outras variáveis constantes do sistema. São variáveis que devem ser exportadas para serem consumidas pelas outras abstrações da aplicação.
+
+Constants centralize fixed system values and pure functions that derive values from other constants. Export constants so other application abstractions can consume them.
 
 Exemplo:
 
 ```ts
-// Exemplo de uma variável constante
+// Constant object example
 
 export const HTTP_METHODS = {
   CONNECT: 'CONNECT',
@@ -19,7 +20,7 @@ export const HTTP_METHODS = {
   TRACE: 'TRACE'
 };
 
-// Exemplo de uma função constante 
+// Constant function example
 
 export const GET_METHOD = ( method: string ) => {
 	return HTTP_METHODS[ method ]
@@ -27,5 +28,11 @@ export const GET_METHOD = ( method: string ) => {
 
 ```
 
-## Padronização
-As Constantes, sejam variavéis como o `HTTP_METHODS` ou funções como o `GET_METHOD` precisam estar em uppercase, separadas por underline, SCREAMING_SNAKE_CASE. Pode e deve concentrar valores de variáveis de sistema através do `process.env`.
+## Naming and scope
+
+The `SCREAMING_SNAKE_CASE` rule applies to both constant variables such as `HTTP_METHODS` and constant functions such as `GET_METHOD`.
+
+- Export every constant.
+- Group constants in semantic files.
+- Keep constant files flat inside `constants/`; do not create component-like nested folder structures.
+- System values may be derived from `process.env` when required.

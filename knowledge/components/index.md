@@ -1,16 +1,16 @@
 
 # Components
 
-Estruturas que envelopam as partes de UI do todo da aplicação. Podem ser de 2 tipos:
+Components wrap the UI parts of the application. There are two component types:
 
-- Componente de Seção
-- Componente Atômico
+- Section Components
+- Atomic Components
 
-## Componentes de Seção
+## Section Components
 
-Envolvem a parte horizontal que possui um contexto e propósito único da tela. Uma tela é formada por componentes de seção "estacadas" ou seja uma em cima da outra até compor a tela inteira. 
+A Section Component represents a horizontal screen block with one clear context and purpose. A screen is composed by stacking Section Components vertically from top to bottom.
 
-Exemplo visual, cada um dos componentes abaixo representados são Componentes de Seção: Header, Hero, Features, Examples, CTA, Footer. 
+Typical examples are `Header`, `Hero`, `Features`, `Examples`, `CTA`, and `Footer`.
 
 ┌──────────────────────────────────────────────┐
 │                    HEADER                    │
@@ -71,11 +71,9 @@ Exemplo visual, cada um dos componentes abaixo representados são Componentes de
 └──────────────────────────────────────────────┘
 
 
-## Componentes Atômicos
+## Atomic Components
 
-São componentes menores que podem ser genéricos, usados no sistema todo como botões ou outros itens que apenas aparecem pontualmente em algumas telas, mas que possuem repetições, como no caso descrito dos componentes de seção, um exemplo de componente atomico poderia ser o componente "Feature", pois ele aparece repetidamente mesmo que em um contexto pequeno ( dentro do macro componente Features ).
-
-Exemplo de componente atômico "Feature", instanciado mais de uma vez dentro de um componente de Seção "Features":
+An Atomic Component is a smaller UI unit that can be generic or repeated. It may be used throughout the system, such as a button, or only within a small screen context, such as a repeated `Feature` item inside the `Features` section.
 
 ┌──────────────────────────────────────────────┐
 │                   FEATURES                   │
@@ -87,8 +85,11 @@ Exemplo de componente atômico "Feature", instanciado mais de uma vez dentro de 
 │                                              │
 └──────────────────────────────────────────────┘
 
-## Comportamento
+## Behavior
 
-Além de renderizar a parte de UI cada componente é responsável por reagir à eventos e interações do usuário, como clicks, mouseover, etc e atualizar seu estado local e repassar o estado para seus componentes filhos caso haja dependencias entre eles.
+Every component is responsible for rendering its UI, reacting to user events such as clicks and mouseover, and updating its local state when needed.
 
-Um componente de seção não deve se relacionar diretamente com outros componentes de seção, deve ser totalmente standalone, só podendo receber propriedades do seu pai que no caso é o componente que representa o domínio ( [Domain](../domain/index.md) ).
+- Pass state to child components when the children depend on it.
+- A Section Component must be standalone.
+- A Section Component must not directly depend on a sibling Section Component.
+- A Section Component may receive properties from its parent, which is normally the Domain component.

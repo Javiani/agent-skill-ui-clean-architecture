@@ -67,7 +67,8 @@ When creating or modifying a domain:
 - include all required components, constants, entities, and services needed for that screen
 - let the domain know its required inputs and outputs
 - keep domain-local abstractions in the domain unless they are reused across domains
-- render the domain from the framework route or page integration layer
+- use the framework route or page integration layer to resolve route parameters, load required context, and render the domain
+- keep detailed HTML and screen composition in the domain, not in the route file
 
 ### Shared
 When creating or modifying a shared abstraction:

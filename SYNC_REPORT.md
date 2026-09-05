@@ -6,7 +6,7 @@
 **Change:** Added rule about flat file structure
 **Original:** "keep the standard HTML shell and reusable frame-level structure in `layouts/`"
 **Updated:** Added "store layouts as flat files (e.g., `default.tsx`, `admin.tsx`) without deep nested folders"
-**Traced to:** knowledge/index.md line 24-25: "A pasta deve conter uma lista de arquivos .ts / .js nao devem estar em uma estrutura quebrada em pastas, ex: default.[jsx, tsx, astro, svelte], admin.[jsx, tsx, astro, svelte]"
+**Traced to:** `knowledge/index.md`, Layouts: layout files are direct children of `layouts/` and must not use nested variant folders.
 **Status:** ✓ VERIFIED
 
 ### 2. Components Section
@@ -16,24 +16,26 @@
 - "if it is an atomic component used only within one section component, place it in a subfolder within that section component's folder"
 - "if an atomic component is used by multiple section components within the same domain, place it as a sibling folder alongside the section components"
 - "if an atomic component is used across multiple domains, place it in `shared/components/`"
-**Traced to:** 
-- knowledge/index.md line 30: "Components, deve estar em uma pasta apenas para ele, e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção."
-- knowledge/index.md line 34: "Seguem a mesma estrutura de pastas que os domínios" (shared follows domain structure)
+**Traced to:** `knowledge/index.md`, Domains and Shared: local atomic components may be nested within a section, reused atomic components may be siblings, and cross-domain abstractions belong in the shared structure.
 **Status:** ✓ VERIFIED
 
 ### 3. Constants Section
 **Change:** Clarified naming rule and added flat file structure rule
 **Original:** "use `SCREAMING_SNAKE_CASE`"
 **Updated:** "use `SCREAMING_SNAKE_CASE` for all constant names (variables and functions)" + "store constants as flat files (e.g., `environment.ts`, `api.ts`) without deep nested folder structures"
-**Traced to:**
-- knowledge/constants/index.md line 31: "precisam estar em uppercase, separadas por underline, SCREAMING_SNAKE_CASE"
-- knowledge/index.md line 31: "devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em pastas"
+**Traced to:** `knowledge/constants/index.md`, Naming and scope: variables and functions use `SCREAMING_SNAKE_CASE`; constant files are semantic and flat.
 **Status:** ✓ VERIFIED
 
 ### 4. Entities Section
 **Change:** Added explicit entity naming, factory, helper-ordering, and purity rules
 **Updated:** Entities use noun / noun-plus-`Type` names, expose an exported factory as their public API, declare destructured defaults in the factory signature, keep private helpers below the factory, and perform no network communication or local persistence
-**Traced to:** knowledge/entities/index.md lines 8-19 and 24-26: entity naming, exported factory API, destructured defaults, framework-agnostic adaptation, and the prohibition on network communication or local persistence
+**Traced to:** `knowledge/entities/index.md`, entity naming and framework-agnostic rules: noun / noun-plus-`Type` naming, exported factory API, destructured defaults, helper ordering, and no network or persistence behavior.
+**Status:** ✓ VERIFIED
+
+### 5. Domains and Framework Integration
+**Change:** Clarified the route integration contract
+**Updated:** Framework route files resolve route parameters, load required context, render the domain, and do not own detailed HTML or screen composition.
+**Traced to:** `knowledge/index.md`, Domains and Framework Integration.
 **Status:** ✓ VERIFIED
 
 ## Architectural Rules Changed
@@ -43,10 +45,11 @@
 3. **Constants:** Clarification that SCREAMING_SNAKE_CASE applies to both variables and functions
 4. **Constants:** New explicit rule about flat file structures
 5. **Entities:** Added naming, factory signature, helper ordering, and purity constraints from the entity knowledge
+6. **Domains:** Clarified route parameter resolution, context loading, and domain-owned screen composition
 
 ## Contradictions Found
 
-**NONE** - All existing SKILL.md instructions remain valid and are not contradicted by any updated rules.
+**NONE** - All existing `SKILL.md` instructions remain valid and are not contradicted by the current `knowledge/` content.
 
 ## Ambiguities and Undefined Areas
 
@@ -60,8 +63,8 @@ The following uncertainties from docs/uncertainties.md remain unresolved in know
 
 ## Summary
 
-- **Files Changed:** 1 (SKILL.md)
-- **Sections Updated:** 4 (Layouts, Components, Constants, Entities)
-- **New Rules Added:** 10 (all traceable to knowledge/)
+- **Files Changed:** 1 (`SKILL.md`)
+- **Sections Updated:** 5 (Layouts, Components, Constants, Entities, Domains)
+- **New Rules Added:** 12 (all traceable to `knowledge/`)
 - **Contradictions:** None found
 - **Ambiguities Reported:** 4 (pre-existing, not introduced)

@@ -1,13 +1,13 @@
 
 # Domain
 
-Domain representa cada tela / página do sistema. Um domínio envolve todas as partes que sao necessárias para que a tela em si funciona corretamente e de maneira independente.
+A Domain represents one screen or page. It includes every part required for that screen to work correctly and independently.
 
-Cada tela deve funcionar de maneira `standalone`, ela deve saber todos os inputs e outputs que ela necessita salvar e disponibilizar para a próxima tela.
+Each screen must be `standalone`. It must know all inputs and outputs required to operate and to expose data needed by the next screen.
 
-O Dominio é o componente de mais alto nível da tela, conterá todos os componentes e dependencias necessários para gerar a tela e deve ser importado e renderizado pelo sistema de acordo com a sua rota.
+The Domain is the highest-level component of the screen. It contains the components and dependencies required to generate the screen and must be imported and rendered according to the framework route.
 
-Exemplo de Código ( Usando o framework Astro )
+Code example using Astro:
 
 ```
 ---
