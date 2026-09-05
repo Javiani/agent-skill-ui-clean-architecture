@@ -13,6 +13,7 @@ As duas macro partes que compõe essa arquitetura são:
 # Abstrações
 
 - [Domains](./domain/index.md)
+- [Entities](./entities/index.md)
 - [Components](./components/index.md)
 - [Constants](./constants/index.md)
 - [Servicos](./services/index.md)
