@@ -95,6 +95,11 @@ src/
           index[tsx,astro,svelte]
       constants/
         environment.ts
+      entities/
+        show.ts
+      services/
+        movie-api/
+          index.ts
       index[tsx,astro,svelte]
   shared/
     components/

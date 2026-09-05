@@ -13,6 +13,10 @@ These instructions are the authority. When the documentation is silent, do not i
 
 ## Hard constraints
 
+- Name every folder and file using `kebab-case`, including framework-independent source files. Framework conventions do not override this rule.
+- The first level below an abstraction folder must use the abstraction's directory shape: components and services are directories for each abstraction with an `index` file. For example, use `components/catalog-header/index.tsx`, never `components/CatalogHeader.tsx`.
+- External communication belongs in `services/<service-name>/index.ts`. Services are stateless and return promises of entities; do not place API/fetch functions beside a domain root or component.
+- JSON adapters and application data models belong in `entities/<entity-name>.ts`. Keep transformation functions such as `mapShow` in the entity abstraction rather than in a service.
 - Treat every screen/page as a `Domain`.
 - A `Domain` is the highest-level component of the screen and must be imported/rendered by the framework according to the route.
 - Each `Domain` must be `standalone`: it must know the required inputs and outputs needed for that screen to work independently.
@@ -50,7 +54,14 @@ src/
   domains/
     <domain-name>/
       components/
+        <component-name>/
+          index[tsx,astro,svelte]
       constants/
+      entities/
+        <entity-name>.[ts,js]
+      services/
+        <service-name>/
+          index.[ts,js]
       index[tsx,astro,svelte]
   shared/
     components/
@@ -69,8 +80,10 @@ src/
 - Domain code owns all feature-specific UI and local abstractions.
 - A screen folder can contain:
   - `index` (the root component representing the domain)
-  - `components/` for section and atomic components local to that screen
+  - `components/<component-name>/index` for section and atomic components local to that screen
   - `constants/` for screen-specific fixed values or pure functions
+  - `entities/<entity-name>` for data adapters and models local to that screen
+  - `services/<service-name>/index` for stateless external API or fetch integrations
 
 ### Shared
 
@@ -84,6 +97,13 @@ src/
 - Keep files flat in `constants/` instead of over-fragmenting them into deep folder trees.
 - Name exported values and pure functions in `SCREAMING_SNAKE_CASE`.
 - Use constants for fixed system values and derivable values from `process.env` when needed.
+
+### Naming and abstraction placement
+
+- `CatalogHeader.tsx` is invalid because it violates `kebab-case` and the component directory convention. The valid shape is `components/catalog-header/index.tsx`.
+- `movieApi.ts` is invalid as a domain-level service file. The valid shape is `services/movie-api/index.ts`.
+- A `mapShow` function that adapts API JSON is an entity concern. The valid shape is `entities/show.ts`, imported by the service.
+- Entities are the exception to the nested `index` rule: they are semantic files directly under `entities/`, while components and services use a named directory containing `index`.
 
 ## Decision rules for new work
 
@@ -179,6 +199,10 @@ This route file is only the framework adapter. The actual screen composition liv
 Before approving a change, inspect these points:
 
 - Does each screen live in a `Domain` folder and act as a standalone unit?
+- Do all files and folders use `kebab-case`?
+- Do components use `components/<component-name>/index` rather than component files directly under `components/`?
+- Are external API/fetch functions under `services/<service-name>/index`?
+- Are JSON mapping functions and data models under `entities/<entity-name>`?
 - Is the domain the highest-level screen component?
 - Does a section component import another section component directly?
 - Is a screen-specific abstraction placed in `Shared` when it is not truly cross-domain?

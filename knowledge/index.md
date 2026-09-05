@@ -19,7 +19,7 @@ As duas macro partes que compõe essa arquitetura são:
 
 # Estrutura de Pastas
 
-O projeto deve ser separado em layouts, domains e shared. Utilize o padrão kebab-case para nomear pastas e arquivos sem exceção, ignore qualquer padronização nesse aspecto do framework/biblioteca utilizada. Todas as abstrações exceto `constants` e `entities`, devem ter no seu primeiro nível da abstração devem ser pastas, exemplo: `components/menu-bar/index.jsx`, `services/tmdb/index.ts`, `entities/product.ts`
+O projeto deve ser separado em layouts, domains e shared. Utilize o padrão kebab-case para nomear pastas e arquivos sem exceção, ignore qualquer padronização nesse aspecto do framework/biblioteca utilizada. No primeiro nível de cada abstração, `components` e `services` devem usar uma pasta semântica por abstração contendo um arquivo `index`, enquanto `constants` e `entities` permanecem como arquivos semânticos diretamente dentro de suas pastas. Exemplos: `components/menu-bar/index.jsx`, `services/tmdb/index.ts`, `entities/product.ts`.
 
 ## Layouts
 Definem os tipos de layout do sistema, considerando as definições padrão de boilerplate do html desde a seção DOCTYPE, até o elemento <body>. Os elementos do layout serão aqueles reutilizados cross telas.
@@ -28,10 +28,10 @@ Definem os tipos de layout do sistema, considerando as definições padrão de b
 
 ## Domains
 O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os domínios possuem todas as abstrações as quais ele depende como : [Components](./components/index.md), [Constants](./constants/index.md) quando estes aparecem apenas no contexto deste domínio.
-	- [Components](./components/index.md), deve estar em uma pasta apenas para ele, e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção.
+	- [Components](./components/index.md), deve estar em uma pasta apenas para ele, usando `components/<component-name>/index` e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção.
 	- [Constants](./constants/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em pastas como os components, para simplificar.
-  - [Entities](./entities/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em sub-pastas para simplificar.
-  - [Services](./services/index.md), deve estar em uma pasta apenas para ele, e pode conter subpastas para armazenar os servicos de maneira contextualizada.
+  - [Entities](./entities/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica diretamente em `entities/`. Adaptadores de JSON, como `mapShow`, pertencem à entidade correspondente.
+  - [Services](./services/index.md), deve estar em uma pasta apenas para ele, usando `services/<service-name>/index` e pode conter subpastas para armazenar os servicos de maneira contextualizada. Funções de API/fetch são services, não arquivos soltos no domínio.
 
 
 ## Shared
