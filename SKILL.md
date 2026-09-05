@@ -16,13 +16,17 @@ When a rule is unclear, do not invent one; keep the implementation minimal and a
 ## Architectural invariants
 
 1. Keep the project split into `layouts/`, `domains/`, and `shared/`.
-2. Treat each domain as a standalone screen/page abstraction.
-3. A domain must know its required inputs and outputs.
-4. Section components are standalone and must not directly depend on sibling section components.
-5. Components handle local UI events and local state.
-6. Constants are exported; use SCREAMING_SNAKE_CASE.
-7. Framework files such as `page.tsx`, `app/.../page.*`, or equivalent route files act as integrators, not as the architecture itself.
-8. Shared abstractions are only for cross-domain reuse.
+2. Within each domain or shared abstraction, preserve the documented sub-structures for `components/`, `constants/`, `entities/`, and `services/` when applicable.
+3. Use kebab-case for folder and file names without exception.
+4. Treat each domain as a standalone screen/page abstraction.
+5. A domain must know its required inputs and outputs.
+6. Section components are standalone and must not directly depend on sibling section components.
+7. Components handle local UI events and local state.
+8. Constants are exported; use `SCREAMING_SNAKE_CASE`.
+9. Entities are factory-style adapters that transform raw payloads into application-shaped data.
+10. Services are stateless functions that perform external communication and return entities or arrays of entities.
+11. Framework files such as `page.tsx`, `app/.../page.*`, or equivalent route files act as integrators, not as the architecture itself.
+12. Shared abstractions are only for cross-domain reuse.
 
 ## Required reading before implementation
 
@@ -32,15 +36,17 @@ Before creating or modifying architecture-aware code, inspect the relevant archi
 - `knowledge/domain/index.md` for domain responsibilities and standalone screen behavior
 - `knowledge/components/index.md` for section/atomic component boundaries and behavior
 - `knowledge/constants/index.md` for constant organization and naming rules
+- `knowledge/entities/index.md` for entity factory/adaptation rules
+- `knowledge/services/index.md` for stateless service responsibilities and return contracts
 
-If the task involves a screen, domain, shared abstraction, reusable component, or constant, load the relevant section before deciding the implementation.
+If the task involves a screen, domain, shared abstraction, reusable component, constant, entity, or service, load the relevant section before deciding the implementation.
 
 ## Decision flow
 
 Use this sequence for every implementation task:
 
 1. Identify affected architecture concepts.
-2. Determine whether the task changes a `layout`, `domain`, `shared`, `component`, or `constant`.
+2. Determine whether the task changes a `layout`, `domain`, `shared`, `component`, `constant`, `entity`, or `service`.
 3. Check the relevant `knowledge/` guidance before editing code.
 4. Choose the implementation that respects the architecture without inventing new architectural rules.
 5. Validate the result against the known invariants.
@@ -57,7 +63,7 @@ When creating or modifying a layout:
 ### Domains
 When creating or modifying a domain:
 - treat the domain as a standalone screen or page
-- include all required components and dependencies needed for that screen
+- include all required components, constants, entities, and services needed for that screen
 - let the domain know its required inputs and outputs
 - keep domain-local abstractions in the domain unless they are reused across domains
 - render the domain from the framework route or page integration layer
@@ -65,7 +71,7 @@ When creating or modifying a domain:
 ### Shared
 When creating or modifying a shared abstraction:
 - only place it in `shared/` if it is reused across domains
-- preserve the same structure discipline as the domain abstraction
+- mirror the same structural discipline as the domain abstraction, including shared `components/`, `constants/`, `entities/`, and `services/` when applicable
 - do not move domain-local code into shared just because it is reusable in one screen
 
 ### Components
@@ -78,6 +84,20 @@ When creating or modifying a component:
 - section components must not directly depend on sibling section components
 - components react to user events and update local state when needed
 - pass necessary state to child components when those children depend on it
+
+### Entities
+When creating or modifying an entity:
+- use a factory-style entity function and its corresponding typed structure
+- keep raw-to-application mapping logic inside the entity abstraction
+- adapt JSON payloads into the application's shape without mixing adaptation rules into a component or service
+- store entity files semantically in `entities/` as standalone files rather than nesting them in component folders
+
+### Services
+When creating or modifying a service:
+- keep the service stateless and focused on external communication
+- return `Promise<Entity>` or `Promise<Entity[]>` as documented
+- place service logic under a contextual `services/<service-name>/index` pattern in the relevant domain or shared scope
+- treat HTTP or API calls as service concerns, not domain or component concerns
 
 ### Constants
 When creating or modifying constants:
@@ -92,7 +112,7 @@ When creating or modifying constants:
 
 ### Create a feature
 When creating a feature for a screen:
-1. Determine whether it is a domain, a section component, an atomic component, or a constant.
+1. Determine whether it is a domain, a section component, an atomic component, an entity, a service, or a constant.
 2. Place it according to its scope: domain-local or shared.
 3. Compose the screen from the domain root.
 4. Keep section boundaries independent and stacked top-to-bottom.
@@ -101,13 +121,13 @@ When creating a feature for a screen:
 ### Modify an existing feature
 Before modifying a feature:
 1. Identify the domain or shared abstraction the feature belongs to.
-2. Check whether the change affects a local component, a shared component, or a constant.
+2. Check whether the change affects a local component, a shared component, an entity, a service, or a constant.
 3. Preserve the architecture's domain boundary and section independence.
 4. Do not relocate local screen logic into shared abstractions unless the architecture explicitly supports reuse across domains.
 
 ### Refactor code
 When refactoring:
-1. Maintain the legal structure: layouts, domains, shared, components, constants.
+1. Maintain the legal structure: layouts, domains, shared, components, constants, entities, and services.
 2. Prefer reducing duplication without changing architectural ownership.
 3. Keep domains standalone.
 4. Keep section-to-section coupling forbidden.
@@ -116,6 +136,7 @@ When refactoring:
 ### Review a pull request
 Review for architecture adherence by checking:
 - Is the structure still `layouts` / `domains` / `shared`?
+- Are the documented sub-structures still respected for components, constants, entities, and services when applicable?
 - Is each screen still a domain with clear inputs and outputs?
 - Are section components still isolated from sibling sections?
 - Are constants still centralized and properly named?
@@ -123,7 +144,7 @@ Review for architecture adherence by checking:
 
 ### Integrate an external API or system value
 When integrating external systems:
-1. Determine whether the integration is a constant, a shared abstraction, or a domain requirement.
+1. Determine whether the integration is a constant, an entity, a service, a shared abstraction, or a domain requirement.
 2. Do not invent an architectural layer that the knowledge does not define.
 3. Keep framework route conventions at the boundary only.
 4. Preserve the screen/domain responsibility model.
@@ -137,11 +158,11 @@ Never:
 - create domain logic that is not owned by the domain
 - scatter constants across component folders in a deep nested structure
 - convert example code into a mandatory standard unless the knowledge explicitly says so
-- invent missing architectural rules to fill gaps
+- invent missing architectural rules to fill gaps, including undocumented state-persistence or data-fetching layers
 
 ## Framework-agnostic rule
 
-The architecture is independent from frameworks. A route file may follow the framework's route convention, but the architecture still remains: layouts, domains, shared, components, constants.
+The architecture is independent from frameworks. A route file may follow the framework's route convention, but the architecture still remains: layouts, domains, shared, components, constants, entities, services.
 
 When a framework is swapped:
 - keep the same architecture
@@ -155,6 +176,8 @@ When a framework is swapped:
 - `shared/`: cross-domain reusable abstractions
 - `components/`: section and atomic UI blocks
 - `constants/`: exported fixed and derived values in `SCREAMING_SNAKE_CASE`
+- `entities/`: raw-to-application data adapters and typed page models
+- `services/`: stateless external communication and API functions
 
 ## Supporting material
 
