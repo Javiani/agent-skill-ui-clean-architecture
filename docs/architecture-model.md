@@ -124,16 +124,35 @@ Responsibilities:
 - act as the top-level page abstraction
 Can:
 - contain local components and local constants
-- be imported into a framework route
+- be imported into a framework route or page/controller boundary
 Cannot:
 - be treated as a mere utility or partial UI fragment
+- absorb framework route implementation details as its own logic
 Depends on:
 - its local components and constants
-- framework route integration
+- data or params provided by the route integration layer
 Used by:
-- route/page files
+- route/page files as the real screen implementation
 Related rules:
 RULE-003, RULE-004, RULE-005, RULE-006, RULE-021
+
+### Route/Page boundary
+Purpose:
+Translate framework routing conventions into domain inputs without defining the screen UI itself.
+Responsibilities:
+- read route params or request data
+- resolve dependencies needed by a domain
+- render the domain as the final screen composition
+Can:
+- wrap a domain in a layout
+- adapt framework-specific params to domain props
+Cannot:
+- contain most of the actual page structure or UI logic
+- replace the domain as the screen abstraction
+Used by:
+- framework routing conventions such as page, route, or controller files
+Related rules:
+RULE-003, RULE-021
 
 ### Shared
 Purpose:

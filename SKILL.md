@@ -17,16 +17,17 @@ When a rule is unclear, do not invent one; keep the implementation minimal and a
 
 1. Keep the project split into `layouts/`, `domains/`, and `shared/`.
 2. Within each domain or shared abstraction, preserve the documented sub-structures for `components/`, `constants/`, `entities/`, and `services/` when applicable.
-3. Use kebab-case for folder and file names without exception.
-4. Treat each domain as a standalone screen/page abstraction.
-5. A domain must know its required inputs and outputs.
-6. Section components are standalone and must not directly depend on sibling section components.
-7. Components handle local UI events and local state.
-8. Constants are exported; use `SCREAMING_SNAKE_CASE`.
-9. Entities are factory-style adapters that transform raw payloads into application-shaped data.
-10. Services are stateless functions that perform external communication and return entities or arrays of entities.
-11. Framework files such as `page.tsx`, `app/.../page.*`, or equivalent route files act as integrators, not as the architecture itself.
-12. Shared abstractions are only for cross-domain reuse.
+3. At the first level of each abstraction, `components/` and `services/` use semantic folders containing an `index` file, while `constants/` and `entities/` remain semantic flat files directly inside their folders.
+4. Use kebab-case for folder and file names without exception.
+5. Treat each domain as a standalone screen/page abstraction.
+6. A domain must know its required inputs and outputs.
+7. Section components are standalone and must not directly depend on sibling section components.
+8. Components handle local UI events and local state.
+9. Constants are exported; use `SCREAMING_SNAKE_CASE`.
+10. Entities are factory-style adapters that transform raw payloads into application-shaped data.
+11. Services are stateless functions that perform external communication and return entities or arrays of entities.
+12. Framework files such as `page.tsx`, `app/.../page.*`, or equivalent route files act as integrators, not as the architecture itself.
+13. Shared abstractions are only for cross-domain reuse.
 
 ## Required reading before implementation
 
@@ -77,7 +78,7 @@ When creating or modifying a shared abstraction:
 ### Components
 When creating or modifying a component:
 - decide whether it is a section component or an atomic component
-- if it is a section component, keep it purpose-specific and standalone, folder-organized under `components/`
+- if it is a section component, keep it purpose-specific and standalone, folder-organized under `components/` with a semantic folder name and an `index` entry point
 - if it is an atomic component used only within one section component, place it in a subfolder within that section component's folder
 - if an atomic component is used by multiple section components within the same domain, place it as a sibling folder alongside the section components
 - if an atomic component is used across multiple domains, place it in `shared/components/`
@@ -106,7 +107,9 @@ When creating or modifying constants:
 - prefer pure derived values or fixed values over scattered literals
 - accept `process.env`-based values when the architecture requires system constants
 - keep constants semantically grouped in dedicated files rather than in component directory nesting
-- store constants as flat files (e.g., `environment.ts`, `api.ts`) without deep nested folder structures
+- store constants as flat files (e.g., `environment.ts`, `api.ts`) directly inside `constants/`, without deep nested folder structures
+
+This matches the architecture's rule that `constants/` and `entities/` remain flat semantic files at the first level of each abstraction, while `components/` and `services/` use semantic folders with an `index` file.
 
 ## Operational guidance
 

@@ -26,7 +26,6 @@ O projeto deve ser separado em layouts, domains e shared. Utilize o padrão keba
 Definem os tipos de layout do sistema, considerando as definições padrão de boilerplate do html desde a seção DOCTYPE, até o elemento <body>. Os elementos do layout serão aqueles reutilizados cross telas.
 - A pasta deve conter uma lista de arquivos .ts / .js nao devem estar em uma estrutura quebrada em pastas, ex: default.[jsx, tsx, astro, svelte], admin.[jsx, tsx, astro, svelte] e assim por diante.
 
-
 ## Domains
 O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os domínios possuem todas as abstrações as quais ele depende como : [Components](./components/index.md), [Constants](./constants/index.md) quando estes aparecem apenas no contexto deste domínio.
 	- [Components](./components/index.md), deve estar em uma pasta apenas para ele, usando `components/<component-name>/index` e pode conter subpastas para armazenar os componentes atômicos que apenas existem no contexto deste componente de seção. Caso o componente atomico sirva para outros componentes de seção, entao este pode ficar em uma pasta irmã dos componentes de seção.
@@ -34,6 +33,7 @@ O conjunto de [domínios](./domain/index.md) ( telas ) que a aplicação tem. Os
   - [Entities](./entities/index.md), devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica diretamente em `entities/`. Adaptadores de JSON, como `mapShow`, pertencem à entidade correspondente.
   - [Services](./services/index.md), deve estar em uma pasta apenas para ele, usando `services/<service-name>/index` e pode conter subpastas para armazenar os servicos de maneira contextualizada. Funções de API/fetch são services, não arquivos soltos no domínio.
 
+As páginas/rotas do framework são apenas integradores do domínio. Elas resolvem o parâmetro da rota, carregam o contexto necessário e renderizam o domínio. O HTML detalhado e a composição de tela pertencem ao domínio, não ao arquivo de rota.
 
 ## Shared
 Esta pasta armazena o conjunto de abstrações que são cross domínios, ou seja, aparecem ou sao reutilizados por outros domínios. São as abstrações compartilhadas. Seguem a mesma estrutura de pastas que os domínios com esta diferença apenas de armazenarem abstrações compartilhadas.
