@@ -89,8 +89,13 @@ When creating or modifying a component:
 ### Entities
 When creating or modifying an entity:
 - use a factory-style entity function and its corresponding typed structure
+- name the entity with a noun (for example, `Movie`) and its structure with the noun plus `Type` (for example, `MovieType`)
+- expose the factory function as the public API of the entity file
+- declare raw-payload defaults directly in the factory signature with destructuring
+- keep private transformation helpers below the exported factory function
 - keep raw-to-application mapping logic inside the entity abstraction
 - adapt JSON payloads into the application's shape without mixing adaptation rules into a component or service
+- keep entities framework-agnostic and free of network communication or local persistence
 - store entity files semantically in `entities/` as standalone files rather than nesting them in component folders
 
 ### Services

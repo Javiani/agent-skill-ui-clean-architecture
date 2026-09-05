@@ -30,12 +30,19 @@
 - knowledge/index.md line 31: "devem ser uma lista de arquivos .ts / .js separados por arquivos de maneira semântica e nao devem estar em uma estrutura quebrada em pastas"
 **Status:** ✓ VERIFIED
 
+### 4. Entities Section
+**Change:** Added explicit entity naming, factory, helper-ordering, and purity rules
+**Updated:** Entities use noun / noun-plus-`Type` names, expose an exported factory as their public API, declare destructured defaults in the factory signature, keep private helpers below the factory, and perform no network communication or local persistence
+**Traced to:** knowledge/entities/index.md lines 8-19 and 24-26: entity naming, exported factory API, destructured defaults, framework-agnostic adaptation, and the prohibition on network communication or local persistence
+**Status:** ✓ VERIFIED
+
 ## Architectural Rules Changed
 
 1. **Layouts:** More explicit structural rule about avoiding nested folders
 2. **Components:** New scoped placement rules for atomic components (domain-local, domain-shared, cross-domain)
 3. **Constants:** Clarification that SCREAMING_SNAKE_CASE applies to both variables and functions
 4. **Constants:** New explicit rule about flat file structures
+5. **Entities:** Added naming, factory signature, helper ordering, and purity constraints from the entity knowledge
 
 ## Contradictions Found
 
@@ -54,7 +61,7 @@ The following uncertainties from docs/uncertainties.md remain unresolved in know
 ## Summary
 
 - **Files Changed:** 1 (SKILL.md)
-- **Sections Updated:** 3 (Layouts, Components, Constants)
-- **New Rules Added:** 5 (all traceable to knowledge/)
+- **Sections Updated:** 4 (Layouts, Components, Constants, Entities)
+- **New Rules Added:** 10 (all traceable to knowledge/)
 - **Contradictions:** None found
 - **Ambiguities Reported:** 4 (pre-existing, not introduced)

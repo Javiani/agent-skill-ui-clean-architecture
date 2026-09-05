@@ -9,6 +9,22 @@ The naming convention is:
 - structure type: noun + `Type`, such as `MovieType`, `ProductType`, `UserType`
 - factory pattern: the entity is a function that receives the raw payload and returns the final typed shape
 
+## Framework-agnostic rules
+
+The same entity conventions apply regardless of framework or rendering model. The entity is a pure adaptation boundary that transforms raw payloads into application-shaped values for React, Angular, Vue, Svelte, or any other UI stack.
+
+- The exported factory function is the public API of the entity file.
+- Default parameters should be declared directly in the factory signature using destructuring.
+- Private helper functions exist only to support the entity transformation and should be placed below the exported factory.
+- Entities do not perform network communication or local persistence; they only adapt data.
+- Service layers handle fetch or API calls; entities handle mapping and normalization.
+
+## Default-parameter factory pattern
+
+Entity factories should prefer a destructured payload with explicit default values instead of a payload object that is normalized inside a helper before the function returns.
+
+This makes the contract obvious and keeps the entity framework-agnostic.
+
 Code Example:
 
 ```ts
@@ -101,3 +117,32 @@ export type MovieType = {
 ```
 
 This keeps the same factory-function structure used in the product example, while respecting the `Movie` / `MovieType` naming rule.
+
+## Helper ordering rule
+
+When an entity includes private helpers, the exported factory function must remain at the top of the file. Any private helper used for sanitization, formatting, image conversion, or normalization should be declared below it.
+
+```ts
+export const Movie = ({
+  id = Number(-1),
+  title = String('Untitled movie'),
+  ...rest
+}: RawMovie = {}): MovieType => ({
+  id,
+  title,
+  overview: toPlainText(rest.overview),
+  poster_path: toImageUrl(rest.poster_path),
+})
+
+const toPlainText = (value?: string) => {
+  if (!value) return 'No overview available.'
+  return value.trim()
+}
+
+const toImageUrl = (path?: string | null) => {
+  if (!path) return null
+  return path
+}
+```
+
+This pattern is intentionally framework-agnostic: it applies the same way in Angular, React, Vue, or any other UI implementation without coupling the entity to a framework-specific lifecycle.
