@@ -19,7 +19,7 @@ As duas macro partes que compõe essa arquitetura são:
 
 # Estrutura de Pastas
 
-O projeto deve ser separado em layouts, domains e shared.
+O projeto deve ser separado em layouts, domains e shared. Utilize o padrão kebab-case para nomear pastas e arquivos sem exceção, ignore qualquer padronização nesse aspecto do framework/biblioteca utilizada. Todas as abstrações exceto `constants` e `entities`, devem ter no seu primeiro nível da abstração devem ser pastas, exemplo: `components/menu-bar/index.jsx`, `services/tmdb/index.ts`, `entities/product.ts`
 
 ## Layouts
 Definem os tipos de layout do sistema, considerando as definições padrão de boilerplate do html desde a seção DOCTYPE, até o elemento <body>. Os elementos do layout serão aqueles reutilizados cross telas.

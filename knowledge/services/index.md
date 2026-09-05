@@ -1,6 +1,6 @@
 # Services
 
-Services handle external communication, such as making requests to endpoints (GET, POST, UPDATE, DELETE) or tracking analytics. They should always return promises of entities and remain stateless.
+Services handle external communication, api and fetch calls, such as making requests to endpoints (GET, POST, UPDATE, DELETE) or tracking analytics. They should always return promises of entities and remain stateless.
 
 2 important rules to follow to be consistent and predictable:
 
